@@ -124,6 +124,55 @@ Sets `accessToken` as httpOnly cookie.
 
 ---
 
+### POST /api/v1/auth/logout
+
+Clear the auth cookie and end the session.
+
+**Auth:** None
+
+**Body:** None
+
+**Success (200):**
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Logged out successfully"
+}
+```
+
+---
+
+### GET /api/v1/auth/me
+
+Get the currently authenticated user's profile.
+
+**Auth:** `STUDENT` or `MENTOR`
+
+**Success (200):**
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "User retrieved successfully",
+  "data": {
+    "user": {
+      "id": "uuid",
+      "name": "Shakil Ahmed",
+      "email": "shakil@example.com",
+      "role": "STUDENT"
+    }
+  }
+}
+```
+
+**Errors:**
+| Status | Message | When |
+|--------|---------|------|
+| 401 | Not authenticated | No token or invalid token |
+
+---
+
 ---
 
 ## Submission Routes (Student)
@@ -259,7 +308,7 @@ Get all submissions, paginated, with optional status filter.
         "description": "A full-stack todo application...",
         "status": "PENDING",
         "review_comment": null,
-        "reviewed_by": null,
+        "reviewed_by_id": null,
         "reviewed_at": null,
         "user": {
           "id": "uuid",
@@ -378,10 +427,12 @@ Get aggregated submission counts by status.
 |--------|------|------|-------------|
 | POST | `/api/v1/auth/register` | None | Student signup |
 | POST | `/api/v1/auth/login` | None | Login (both roles) |
+| POST | `/api/v1/auth/logout` | None | Clear session cookie |
+| GET | `/api/v1/auth/me` | Any | Get current user profile |
 | POST | `/api/v1/submissions` | Student | Submit a project |
 | GET | `/api/v1/submissions/mine` | Student | View own submissions |
 | GET | `/api/v1/submissions` | Mentor | List all submissions (paginated, filterable) |
 | PATCH | `/api/v1/submissions/:id/review` | Mentor | Approve or reject |
 | GET | `/api/v1/submissions/stats` | Mentor | Aggregated counts |
 
-**Total: 7 endpoints**
+**Total: 9 endpoints**

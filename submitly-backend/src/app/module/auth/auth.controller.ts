@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import httpStatus from "http-status";
+import config from "../../config";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { AuthService } from "./auth.service";
@@ -29,7 +30,36 @@ const login = catchAsync(async (req: Request, res: Response) => {
 	});
 });
 
+const logout = catchAsync(async (_req: Request, res: Response) => {
+	res.cookie("accessToken", "", {
+		httpOnly: true,
+		secure: config.node_env === "production",
+		sameSite: "lax",
+		maxAge: 0,
+	});
+
+	sendResponse(res, {
+		success: true,
+		statusCode: httpStatus.OK,
+		message: "Logged out successfully",
+		data: null,
+	});
+});
+
+const me = catchAsync(async (req: Request, res: Response) => {
+	const user = await AuthService.me(req.user!.userId);
+
+	sendResponse(res, {
+		success: true,
+		statusCode: httpStatus.OK,
+		message: "User retrieved successfully",
+		data: { user },
+	});
+});
+
 export const AuthController = {
 	register,
 	login,
+	logout,
+	me,
 };
