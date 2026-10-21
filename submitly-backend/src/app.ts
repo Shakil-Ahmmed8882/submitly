@@ -8,6 +8,7 @@ import { globalErrorHandler } from "./app/middleware/globalErrorHandler";
 import { notFound } from "./app/middleware/notFound";
 import { globalLimiter } from "./app/middleware/rateLimiter";
 import { AuthRoutes } from "./app/module/auth/auth.route";
+import { SubmissionRoutes } from "./app/module/submission/submission.route";
 
 const app: Application = express();
 
@@ -24,6 +25,7 @@ app.get("/health", async (_req: Request, res: Response) => {
 
 
 app.use("/api/v1/auth", AuthRoutes);
+app.use("/api/v1/submissions", SubmissionRoutes);
 
 app.use(globalErrorHandler);
 app.use(notFound);
