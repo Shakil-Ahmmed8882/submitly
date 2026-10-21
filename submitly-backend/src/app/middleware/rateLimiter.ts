@@ -20,7 +20,7 @@ export const submissionLimiter = rateLimit({
 	limit: 3,
 	standardHeaders: true,
 	legacyHeaders: false,
-	keyGenerator: (req) => req.user?.userId ?? req.ip ?? "unknown",
+	keyGenerator: (req) => req.user!.userId,
 	handler: (_req, res) => {
 		res.status(httpStatus.TOO_MANY_REQUESTS).json({
 			success: false,

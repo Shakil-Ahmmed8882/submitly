@@ -54,9 +54,10 @@ const login = async (payload: ILoginPayload) => {
 		config.jwt_expires_in as any,
 	);
 
-	const { password: _, ...userWithoutPassword } = user;
-
-	return { user: userWithoutPassword, token };
+	return {
+		user: { id: user.id, name: user.name, email: user.email, role: user.role },
+		token,
+	};
 };
 
 export const AuthService = {
