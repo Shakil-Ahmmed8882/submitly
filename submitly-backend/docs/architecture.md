@@ -248,7 +248,7 @@ Rate limit key for submissions: `userId` from the JWT (not IP).
 | Functions | camelCase | `getMySubmissions` |
 | Routes | kebab-case | `/api/v1/submissions/my-submissions` |
 | DB tables | PascalCase (Prisma) | `User`, `Submission` |
-| DB columns | camelCase (Prisma) | `repoUrl`, `createdAt` |
+| DB columns | snake_case | `repo_url`, `created_at` |
 | Env vars | SCREAMING_SNAKE | `JWT_SECRET`, `DATABASE_URL` |
 | Zod schemas | PascalCase + Schema | `CreateSubmissionSchema` |
 
