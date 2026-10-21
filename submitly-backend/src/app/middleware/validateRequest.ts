@@ -11,7 +11,7 @@ export const validateRequest = (zodSchema: z.ZodTypeAny) => {
 
 		if (!result.success) {
 			throw new AppError(
-				httpStatus.BAD_REQUEST,
+				httpStatus.UNPROCESSABLE_ENTITY,
 				result.error.issues.map((issue) => issue.message).join(", "),
 			);
 		}

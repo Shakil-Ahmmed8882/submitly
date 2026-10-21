@@ -32,7 +32,7 @@ const getAll = catchAsync(async (req: Request, res: Response) => {
 	const parsed = QuerySubmissionsSchema.safeParse(req.query);
 	if (!parsed.success) {
 		throw new AppError(
-			httpStatus.BAD_REQUEST,
+			httpStatus.UNPROCESSABLE_ENTITY,
 			parsed.error.issues.map((issue) => issue.message).join(", "),
 		);
 	}
