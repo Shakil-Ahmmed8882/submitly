@@ -1,52 +1,55 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { AttachmentField } from "@/components/reusable-ui-blocks/attachment/AttachmentField";
+import { useRouter } from "next/navigation";
 import {
   GenericForm,
-  SelectField,
   SubmitButton,
   TextareaField,
   TextField,
 } from "@/components/reusable-ui-blocks/form";
 import { Button } from "@/components/ui/button";
+import { useCreateSubmission } from "@/hooks/submissions.hook";
 import { routes } from "@/routes";
+import type { CreateSubmissionInput } from "@/types/submissions.type";
 import { z } from "zod";
 
-const CATEGORIES = [
-  { value: "frontend", text: "Frontend" },
-  { value: "backend", text: "Backend" },
-  { value: "fullstack", text: "Full Stack" },
-  { value: "mobile", text: "Mobile" },
-  { value: "other", text: "Other" },
-];
-
 const submissionSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().min(10, "Description must be at least 10 characters"),
-  githubUrl: z.string().url("Enter a valid GitHub URL"),
-  liveUrl: z.string().url("Enter a valid URL").optional().or(z.literal("")),
-  category: z.string().min(1, "Category is required"),
-  notes: z.string().optional(),
+  project_name: z.string().min(1, "Project name is required"),
+  description: z
+    .string()
+    .min(10, "Description must be at least 10 characters"),
+  repo_url: z.string().url("Enter a valid repository URL"),
+  live_link: z
+    .string()
+    .url("Enter a valid URL")
+    .optional()
+    .or(z.literal("")),
 });
 
-type SubmissionInput = z.infer<typeof submissionSchema>;
+type SubmissionFormValues = z.infer<typeof submissionSchema>;
 
-const initialValues: SubmissionInput = {
-  title: "",
+const initialValues: SubmissionFormValues = {
+  project_name: "",
   description: "",
-  githubUrl: "",
-  liveUrl: "",
-  category: "",
-  notes: "",
+  repo_url: "",
+  live_link: "",
 };
 
 export function SubmissionForm() {
-  const [attachments, setAttachments] = useState<File[]>([]);
+  const mutation = useCreateSubmission();
+  const router = useRouter();
 
-  function handleSubmit(_values: SubmissionInput) {
-    // API integration comes later
+  async function handleSubmit(values: SubmissionFormValues) {
+    if (mutation.isPending) return;
+    const input: CreateSubmissionInput = {
+      project_name: values.project_name,
+      repo_url: values.repo_url,
+      description: values.description,
+      ...(values.live_link ? { live_link: values.live_link } : {}),
+    };
+    await mutation.mutateAsync(input);
+    router.replace(routes.submissions);
   }
 
   return (
@@ -67,10 +70,10 @@ export function SubmissionForm() {
         onSubmit={handleSubmit}
         className="space-y-6"
       >
-        <fieldset className="space-y-5">
+        <fieldset disabled={mutation.isPending} className="space-y-5">
           <TextField
-            name="title"
-            label="Project title"
+            name="project_name"
+            label="Project name"
             placeholder="e.g. E-commerce dashboard"
             required
             autoComplete="off"
@@ -87,53 +90,20 @@ export function SubmissionForm() {
 
           <div className="grid gap-5 sm:grid-cols-2">
             <TextField
-              name="githubUrl"
-              label="GitHub repository"
+              name="repo_url"
+              label="Repository URL"
               placeholder="https://github.com/you/project"
               required
               autoComplete="off"
             />
             <TextField
-              name="liveUrl"
+              name="live_link"
               label="Live demo URL"
               placeholder="https://your-project.vercel.app"
               autoComplete="off"
             />
           </div>
-
-          <SelectField
-            name="category"
-            label="Category"
-            required
-            placeholder="Select a category"
-            options={CATEGORIES}
-          />
-
-          <TextareaField
-            name="notes"
-            label="Notes for mentor"
-            placeholder="Anything you'd like your mentor to focus on or know?"
-            rows={3}
-          />
         </fieldset>
-
-        <div className="space-y-3">
-          <div>
-            <p className="text-sm leading-5 font-medium">Attachments</p>
-            <p className="mt-1 text-xs leading-5 text-muted-foreground">
-              Optional. Upload screenshots, designs, or any supporting files.
-            </p>
-          </div>
-          <AttachmentField
-            files={attachments}
-            accept="image/*,.pdf,.zip"
-            maxSizeKb={10 * 1024}
-            onAdd={(files) => setAttachments((prev) => [...prev, ...files])}
-            onRemove={(file) =>
-              setAttachments((prev) => prev.filter((f) => f !== file))
-            }
-          />
-        </div>
 
         <div className="flex flex-col-reverse gap-3 border-t border-border pt-6 sm:flex-row sm:justify-end">
           <Button asChild variant="ghost" size="xl">

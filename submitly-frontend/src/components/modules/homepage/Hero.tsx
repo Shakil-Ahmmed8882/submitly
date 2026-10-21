@@ -1,48 +1,58 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { MarketingAction } from "./MarketingAction";
+import { routes } from "@/routes";
 
 export default function Hero() {
-  const reducedMotion = useReducedMotion();
   return (
-    <section className="relative isolate overflow-hidden">
-      <div
-        aria-hidden="true"
-        className="mesh-gradient pointer-events-none absolute inset-x-0 top-0 -z-10 h-[520px] opacity-80"
-      />
-      <motion.div
-        initial={reducedMotion ? false : { opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, ease: "easeOut" }}
-        className="mx-auto flex max-w-[1400px] flex-col items-center px-4 pt-24 pb-28 text-center sm:px-6 sm:pt-32"
-      >
-        <span className="mb-8 inline-flex items-center gap-2 rounded-full bg-link-bg-soft px-3 py-1.5 text-sm text-link">
-          <span className="size-1.5 rounded-full bg-link" />
-          Built for learners &amp; mentors
+    <section className="pt-24 pb-12 lg:pt-32 lg:pb-16 text-center">
+      <div className="mx-auto max-w-4xl px-6">
+        <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-xs font-medium text-muted-foreground">
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+          </span>
+          Now open for students &amp; mentors
         </span>
 
-        <h1 className="max-w-4xl text-4xl leading-[1.05] tracking-[-0.05em] sm:text-display-xl">
-          Submit your work. Get real feedback.
+        <h1 className="text-[clamp(2.75rem,8vw,5.5rem)] font-semibold tracking-[-0.04em] leading-[1.04] mb-6">
+          One platform.<br />
+          <span className="text-muted-foreground/60">Real feedback.</span>
         </h1>
-        <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
-          Submitly connects students with mentors for structured project reviews.
-          Submit once, track feedback, grow faster.
+
+        <p className="text-base lg:text-lg leading-relaxed text-muted-foreground max-w-lg mx-auto">
+          Submit your projects, get structured mentor reviews, and grow your
+          skills — all in one place.
         </p>
 
-        <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-          <MarketingAction />
-          <Button asChild size="pill" variant="outline">
-            <Link href="#how-it-works">See how it works</Link>
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <Button asChild size="xl">
+            <Link href={routes.register}>
+              Get started free
+              <ArrowRight className="ml-2 size-4" aria-hidden="true" />
+            </Link>
+          </Button>
+          <Button asChild variant="outline" size="xl">
+            <Link href={routes.login}>Sign in</Link>
           </Button>
         </div>
 
-        <p className="mt-8 text-xs text-muted-foreground">
-          For students &amp; mentors · Free to start
-        </p>
-      </motion.div>
+        <div className="mt-12 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 border-t border-border pt-10">
+          {[
+            { value: "500+", label: "Students enrolled" },
+            { value: "1,200+", label: "Reviews" },
+            { value: "4.9★", label: "Avg mentor rating" },
+            { value: "1,200+", label: "Reviews delivered" },
+          ].map(({ value, label }) => (
+            <div key={label} className="text-center">
+              <p className="text-2xl font-semibold tabular-nums">{value}</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">{label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }

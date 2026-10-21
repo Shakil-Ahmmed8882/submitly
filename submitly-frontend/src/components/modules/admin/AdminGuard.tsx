@@ -51,7 +51,7 @@ export function AdminGuard({ children }: { children: ReactNode }) {
     );
   }
   if (session.isPending || !user) return <DashboardLoading />;
-  if (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN")
+  if (user.role !== "MENTOR")
     return <AdminForbidden />;
 
   return (

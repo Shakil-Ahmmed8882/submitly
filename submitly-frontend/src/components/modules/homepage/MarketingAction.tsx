@@ -8,10 +8,8 @@ import { useHydrated } from "@/hooks/hydrated.hook";
 import { routes } from "@/routes";
 
 export function MarketingAction({
-  premium = false,
   className,
 }: {
-  premium?: boolean;
   className?: string;
 }) {
   const session = useSession();
@@ -33,20 +31,8 @@ export function MarketingAction({
         Retry session
       </Button>
     );
-  const href = !session.data
-    ? routes.register
-    : premium
-      ? routes.payment
-      : routes.dashboard;
-  const label = !session.data
-    ? premium
-      ? "Create your account"
-      : "Start publishing"
-    : premium
-      ? session.data.isPremium
-        ? "View your membership"
-        : "Explore Premium"
-      : "Open dashboard";
+  const href = !session.data ? routes.register : routes.dashboard;
+  const label = !session.data ? "Get started free" : "Open dashboard";
   return (
     <Button asChild size="pill" className={className}>
       <Link href={href}>

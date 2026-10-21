@@ -230,7 +230,7 @@ export function AdminUsersPage() {
               userId={selected.id}
               initial={selected}
               viewerId={viewer.id}
-              viewerIsSuperAdmin={viewer.role === "SUPER_ADMIN"}
+              viewerIsSuperAdmin={false}
             />
           ) : null}
         </Drawer.Page>

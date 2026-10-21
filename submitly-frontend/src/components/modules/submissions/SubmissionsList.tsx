@@ -1,81 +1,73 @@
 "use client";
 
-import { ArrowRight, FileText, Search } from "lucide-react";
+import { ArrowRight, ChevronDown, FileText, Search } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { Dropdown } from "@/components/reusable-ui-blocks/dropdown/Dropdown";
+import { useMySubmissions } from "@/hooks/submissions.hook";
 import { routes } from "@/routes";
+import type { Submission } from "@/types/submissions.type";
 
-const ALL_SUBMISSIONS = [
-  {
-    id: "1",
-    title: "E-commerce Dashboard",
-    category: "Full Stack",
-    status: "Reviewed",
-    date: "Oct 20, 2026",
-    mentor: "Sarah Johnson",
-  },
-  {
-    id: "2",
-    title: "Task Manager App",
-    category: "Frontend",
-    status: "Pending",
-    date: "Oct 18, 2026",
-    mentor: "Sarah Johnson",
-  },
-  {
-    id: "3",
-    title: "REST API with Auth",
-    category: "Backend",
-    status: "Reviewed",
-    date: "Oct 15, 2026",
-    mentor: "Sarah Johnson",
-  },
-  {
-    id: "4",
-    title: "Chat Application",
-    category: "Full Stack",
-    status: "Pending",
-    date: "Oct 12, 2026",
-    mentor: "Sarah Johnson",
-  },
-  {
-    id: "5",
-    title: "Portfolio Website",
-    category: "Frontend",
-    status: "Reviewed",
-    date: "Oct 10, 2026",
-    mentor: "Sarah Johnson",
-  },
-  {
-    id: "6",
-    title: "Mobile Weather App",
-    category: "Mobile",
-    status: "Reviewed",
-    date: "Oct 5, 2026",
-    mentor: "Sarah Johnson",
-  },
+type StatusFilter = "All" | "PENDING" | "APPROVED" | "REJECTED";
+
+const STATUS_OPTIONS: { value: StatusFilter; label: string }[] = [
+  { value: "All", label: "All statuses" },
+  { value: "PENDING", label: "Pending" },
+  { value: "APPROVED", label: "Approved" },
+  { value: "REJECTED", label: "Rejected" },
 ];
 
-const statusColors: Record<string, string> = {
-  Reviewed:
-    "bg-emerald-500/10 text-emerald-400 ring-1 ring-inset ring-emerald-500/20",
-  Pending:
-    "bg-amber-500/10 text-amber-400 ring-1 ring-inset ring-amber-500/20",
+const STATUS_BADGE: Record<
+  Submission["status"],
+  { label: string; className: string }
+> = {
+  PENDING: {
+    label: "Pending",
+    className:
+      "bg-amber-500/10 text-amber-400 ring-1 ring-inset ring-amber-500/20",
+  },
+  APPROVED: {
+    label: "Approved",
+    className:
+      "bg-emerald-500/10 text-emerald-400 ring-1 ring-inset ring-emerald-500/20",
+  },
+  REJECTED: {
+    label: "Rejected",
+    className: "bg-red-500/10 text-red-400 ring-1 ring-inset ring-red-500/20",
+  },
 };
 
-const CATEGORIES = ["All", "Frontend", "Backend", "Full Stack", "Mobile"];
-const STATUSES = ["All", "Pending", "Reviewed"];
+function formatDate(iso: string) {
+  return new Date(iso).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+function SkeletonRow() {
+  return (
+    <div className="flex items-center gap-4 px-5 py-4">
+      <div className="h-4 flex-1 animate-pulse rounded bg-muted" />
+      <div className="h-4 w-20 animate-pulse rounded bg-muted" />
+      <div className="h-5 w-16 animate-pulse rounded-full bg-muted" />
+      <div className="h-4 w-24 animate-pulse rounded bg-muted" />
+    </div>
+  );
+}
 
 export function SubmissionsList() {
+  const { data, isPending, isError } = useMySubmissions();
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("All");
-  const [status, setStatus] = useState("All");
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("All");
 
-  const filtered = ALL_SUBMISSIONS.filter((s) => {
-    const matchSearch = s.title.toLowerCase().includes(search.toLowerCase());
-    const matchCategory = category === "All" || s.category === category;
-    const matchStatus = status === "All" || s.status === status;
-    return matchSearch && matchCategory && matchStatus;
+  const filtered = (data ?? []).filter((s) => {
+    const matchSearch = s.project_name
+      .toLowerCase()
+      .includes(search.toLowerCase());
+    const matchStatus =
+      statusFilter === "All" || s.status === statusFilter;
+    return matchSearch && matchStatus;
   });
 
   return (
@@ -102,31 +94,40 @@ export function SubmissionsList() {
             className="h-9 w-full rounded-md border border-input bg-background pl-9 pr-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
           />
         </div>
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="h-9 rounded-md border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-        >
-          {CATEGORIES.map((c) => (
-            <option key={c} value={c}>
-              {c === "All" ? "All categories" : c}
-            </option>
-          ))}
-        </select>
-        <select
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-          className="h-9 rounded-md border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-        >
-          {STATUSES.map((s) => (
-            <option key={s} value={s}>
-              {s === "All" ? "All statuses" : s}
-            </option>
-          ))}
-        </select>
+        <Dropdown
+          options={STATUS_OPTIONS}
+          value={statusFilter}
+          onChange={setStatusFilter}
+          align="start"
+          trigger={
+            <button
+              type="button"
+              className="inline-flex h-9 items-center gap-2 rounded-md border border-input bg-background px-3 text-sm text-foreground transition-colors hover:bg-accent"
+            >
+              {STATUS_OPTIONS.find((o) => o.value === statusFilter)?.label}
+              <ChevronDown
+                className="size-3.5 text-muted-foreground"
+                aria-hidden="true"
+              />
+            </button>
+          }
+        />
       </div>
 
-      {filtered.length === 0 ? (
+      {isError ? (
+        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-16 text-center">
+          <p className="text-sm font-medium">Failed to load submissions</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Please try refreshing the page.
+          </p>
+        </div>
+      ) : isPending ? (
+        <div className="rounded-lg bg-card shadow-card divide-y divide-border">
+          {[1, 2, 3].map((n) => (
+            <SkeletonRow key={n} />
+          ))}
+        </div>
+      ) : filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-16 text-center">
           <FileText
             className="mb-3 size-10 text-muted-foreground"
@@ -134,41 +135,46 @@ export function SubmissionsList() {
           />
           <p className="text-sm font-medium">No submissions found</p>
           <p className="mt-1 text-sm text-muted-foreground">
-            Try adjusting your filters.
+            {data?.length === 0
+              ? "You haven't submitted any projects yet."
+              : "Try adjusting your filters."}
           </p>
         </div>
       ) : (
         <div className="rounded-lg bg-card shadow-card">
-          <div className="hidden grid-cols-[1fr_120px_110px_100px_40px] gap-4 border-b border-border px-5 py-3 text-xs font-medium text-muted-foreground sm:grid">
+          <div className="hidden grid-cols-[1fr_110px_100px_40px] gap-4 border-b border-border px-5 py-3 text-xs font-medium text-muted-foreground sm:grid">
             <span>Project</span>
-            <span>Category</span>
             <span>Status</span>
             <span>Date</span>
             <span />
           </div>
           <div className="divide-y divide-border">
-            {filtered.map((sub) => (
-              <Link
-                key={sub.id}
-                href={routes.submissionDetail(sub.id)}
-                className="flex flex-col gap-2 px-5 py-4 transition-colors hover:bg-accent/40 sm:grid sm:grid-cols-[1fr_120px_110px_100px_40px] sm:items-center sm:gap-4"
-              >
-                <p className="truncate text-sm font-medium">{sub.title}</p>
-                <p className="text-xs text-muted-foreground sm:text-sm">
-                  {sub.category}
-                </p>
-                <span
-                  className={`w-fit rounded-full px-2.5 py-0.5 text-xs font-medium ${statusColors[sub.status]}`}
+            {filtered.map((sub) => {
+              const badge = STATUS_BADGE[sub.status];
+              return (
+                <Link
+                  key={sub.id}
+                  href={routes.submissionDetail(sub.id)}
+                  className="flex flex-col gap-2 px-5 py-4 transition-colors hover:bg-accent/40 sm:grid sm:grid-cols-[1fr_110px_100px_40px] sm:items-center sm:gap-4"
                 >
-                  {sub.status}
-                </span>
-                <p className="text-xs text-muted-foreground">{sub.date}</p>
-                <ArrowRight
-                  className="hidden size-4 text-muted-foreground sm:block"
-                  aria-hidden="true"
-                />
-              </Link>
-            ))}
+                  <p className="truncate text-sm font-medium">
+                    {sub.project_name}
+                  </p>
+                  <span
+                    className={`w-fit rounded-full px-2.5 py-0.5 text-xs font-medium ${badge.className}`}
+                  >
+                    {badge.label}
+                  </span>
+                  <p className="text-xs text-muted-foreground">
+                    {formatDate(sub.created_at)}
+                  </p>
+                  <ArrowRight
+                    className="hidden size-4 text-muted-foreground sm:block"
+                    aria-hidden="true"
+                  />
+                </Link>
+              );
+            })}
           </div>
         </div>
       )}

@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Logo } from "@/components/brand/Logo";
-import { PremiumBadge } from "@/components/modules/shared/PremiumBadge";
 import { BaseAvatar } from "@/components/reusable-ui-blocks/images/variations/avatar/BaseAvatar";
 import { cn } from "@/lib/utils";
 import { isActiveRoute, navItems } from "@/routes";
@@ -47,14 +46,10 @@ export function Sidebar({
           })}
       </nav>
       <div className="mt-auto flex items-center gap-3 border-t border-border pt-5">
-        <BaseAvatar src={user.avatarUrl} name={user.name} size="sm" />
+        <BaseAvatar src={null} name={user.name} size="sm" />
         <div className="min-w-0 space-y-1">
           <p className="truncate text-sm font-medium">{user.name}</p>
-          {user.isPremium ? (
-            <PremiumBadge />
-          ) : (
-            <p className="text-xs text-muted-foreground">Free account</p>
-          )}
+          <p className="text-xs text-muted-foreground capitalize">{user.role.toLowerCase()}</p>
         </div>
       </div>
     </div>

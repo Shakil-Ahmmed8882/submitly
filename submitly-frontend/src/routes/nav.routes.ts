@@ -45,7 +45,7 @@ export const navItems: NavItem[] = [
     label: "Admin",
     href: routes.admin,
     icon: Shield,
-    visible: (user) => user.role === "ADMIN" || user.role === "SUPER_ADMIN",
+    visible: (user) => user.role === "MENTOR",
   },
 ];
 

@@ -3,7 +3,6 @@
 import { LogOut, UserRound } from "lucide-react";
 import Link from "next/link";
 import { DropdownMenu } from "radix-ui";
-import { PremiumBadge } from "@/components/modules/shared/PremiumBadge";
 import { BaseAvatar } from "@/components/reusable-ui-blocks/images/variations/avatar/BaseAvatar";
 import { Button } from "@/components/ui/button";
 import { useLogout } from "@/hooks/auth.hook";
@@ -24,7 +23,7 @@ export function UserMenu({ user }: { user: User }) {
           aria-label="Open account menu"
           className="rounded-full"
         >
-          <BaseAvatar src={user.avatarUrl} name={user.name} size="sm" />
+          <BaseAvatar src={null} name={user.name} size="sm" />
         </Button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
@@ -38,7 +37,7 @@ export function UserMenu({ user }: { user: User }) {
             <p className="break-all text-xs font-normal text-muted-foreground">
               {user.email}
             </p>
-            {user.isPremium && <PremiumBadge />}
+            <p className="text-xs text-muted-foreground capitalize">{user.role.toLowerCase()}</p>
           </DropdownMenu.Label>
           <DropdownMenu.Separator className="my-1 h-px bg-border" />
           <DropdownMenu.Item asChild className={itemClass}>
