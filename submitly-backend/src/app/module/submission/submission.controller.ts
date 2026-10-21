@@ -50,7 +50,7 @@ const getAll = catchAsync(async (req: Request, res: Response) => {
 
 const review = catchAsync(async (req: Request, res: Response) => {
 	const submission = await SubmissionService.review(
-		req.params.id,
+		req.params.id as string,
 		req.user!.userId,
 		req.body,
 	);
