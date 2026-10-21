@@ -48,11 +48,11 @@ export default function LoginForm() {
   }
   return (
     <AuthCard
-      title="Log in"
-      description="Welcome back. Your next post starts here."
+      title="Welcome back"
+      description="Log in to continue your learning journey."
       footer={
         <>
-          New here?{" "}
+          New to Submitly?{" "}
           <Link
             href={routes.register}
             className="text-foreground hover:underline"

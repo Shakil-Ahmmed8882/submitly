@@ -1,25 +1,25 @@
-import { History, Layers, RotateCw, ShieldCheck } from "lucide-react";
+import { MessageSquare, RotateCcw, ShieldCheck, Upload } from "lucide-react";
 
 const features = [
   {
-    icon: Layers,
-    title: "One composer, many platforms.",
-    body: "Write your post and an optional image once. Choose LinkedIn, Facebook, or both.",
+    icon: Upload,
+    title: "Submit your project",
+    body: "Share your GitHub repo, live demo, and description in one form.",
   },
   {
-    icon: History,
-    title: "Every publish, on the record.",
-    body: "See each execution, each platform result, and every attempt — with clear status at a glance.",
+    icon: MessageSquare,
+    title: "Get structured feedback",
+    body: "Mentors leave detailed, actionable comments on your work.",
   },
   {
-    icon: RotateCw,
-    title: "Retry what failed.",
-    body: "A platform hiccup shouldn't cost you the post. Retry just the failed destinations in one click.",
+    icon: RotateCcw,
+    title: "Track revision history",
+    body: "Every submission and feedback round is logged and searchable.",
   },
   {
     icon: ShieldCheck,
-    title: "Your tokens stay safe.",
-    body: "Connections are encrypted server-side. Disconnect a platform any time and the access goes with it.",
+    title: "Safe and private",
+    body: "Your submissions are only visible to you and your assigned mentor.",
   },
 ] as const;
 
@@ -29,7 +29,7 @@ export default function Features() {
       <div className="mx-auto max-w-[1400px] px-4 py-24 sm:px-6">
         <p className="eyebrow">Features</p>
         <h2 className="mt-3 max-w-2xl text-3xl tracking-[-0.04em] sm:text-display-lg">
-          Everything between &ldquo;draft&rdquo; and &ldquo;live&rdquo;.
+          Everything your learning needs.
         </h2>
 
         <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

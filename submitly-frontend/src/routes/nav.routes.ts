@@ -1,13 +1,10 @@
 import {
-  Crown,
+  ClipboardList,
   LayoutDashboard,
-  Link2,
   type LucideIcon,
   PenSquare,
   Shield,
-  Sparkles,
   UserRound,
-  Workflow,
 } from "lucide-react";
 import type { User } from "@/types/auth.type";
 import { routes } from "./app.routes";
@@ -27,34 +24,16 @@ export const navItems: NavItem[] = [
     visible: () => true,
   },
   {
-    label: "Create post",
+    label: "Submit project",
     href: routes.create,
     icon: PenSquare,
     visible: () => true,
   },
   {
-    label: "Connections",
-    href: routes.connections,
-    icon: Link2,
+    label: "My submissions",
+    href: routes.submissions,
+    icon: ClipboardList,
     visible: () => true,
-  },
-  {
-    label: "Executions",
-    href: routes.executions,
-    icon: Workflow,
-    visible: () => true,
-  },
-  {
-    label: "Upcoming features",
-    href: routes.upcomingFeatures,
-    icon: Sparkles,
-    visible: (user) => user.isPremium,
-  },
-  {
-    label: "Upgrade",
-    href: routes.payment,
-    icon: Crown,
-    visible: (user) => !user.isPremium,
   },
   {
     label: "Profile",
@@ -64,7 +43,7 @@ export const navItems: NavItem[] = [
   },
   {
     label: "Admin",
-    href: routes.adminPlatforms,
+    href: routes.admin,
     icon: Shield,
     visible: (user) => user.role === "ADMIN" || user.role === "SUPER_ADMIN",
   },

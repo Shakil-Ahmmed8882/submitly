@@ -11,23 +11,23 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Content Automation — write once, publish everywhere",
-    template: "%s · Content Automation",
+    default: "Submitly — submit projects, get mentor feedback",
+    template: "%s · Submitly",
   },
   description:
-    "Write a post once and publish it to LinkedIn and Facebook in one click. Track every publish, retry what failed.",
+    "Submit your projects, track mentor reviews, and get actionable feedback to level up your skills.",
   openGraph: {
     type: "website",
-    siteName: "Content Automation",
-    title: "Content Automation — write once, publish everywhere",
+    siteName: "Submitly",
+    title: "Submitly — submit projects, get mentor feedback",
     description:
-      "Write a post once and publish it to LinkedIn and Facebook in one click. Track every publish, retry what failed.",
+      "Submit your projects, track mentor reviews, and get actionable feedback to level up your skills.",
   },
   twitter: {
     card: "summary",
-    title: "Content Automation — write once, publish everywhere",
+    title: "Submitly — submit projects, get mentor feedback",
     description:
-      "Write a post once and publish it to LinkedIn and Facebook in one click. Track every publish, retry what failed.",
+      "Submit your projects, track mentor reviews, and get actionable feedback to level up your skills.",
   },
 };
 

@@ -28,13 +28,11 @@ export function Logo({ className }: { className?: string }) {
   return (
     <Link
       href="/"
-      aria-label="Content Automation — home"
+      aria-label="Submitly — home"
       className={cn("inline-flex items-center gap-2.5", className)}
     >
       <LogoMark />
-      <span className="text-sm font-semibold tracking-tight">
-        Content Automation
-      </span>
+      <span className="text-sm font-semibold tracking-tight">Submitly</span>
     </Link>
   );
 }

@@ -9,8 +9,8 @@ export default function Footer() {
         <div className="max-w-xs space-y-4">
           <Logo />
           <p className="text-sm text-muted-foreground">
-            Write once. Publish to LinkedIn and Facebook. See exactly what went
-            out — and retry what didn&apos;t.
+            Submit your projects. Get structured feedback from mentors. Grow
+            faster with every review.
           </p>
         </div>
 
@@ -35,8 +35,8 @@ export default function Footer() {
 
       <div className="border-t border-border">
         <div className="mx-auto flex max-w-[1400px] flex-col gap-2 px-4 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <p>© {new Date().getFullYear()} Content Automation</p>
-          <p>LinkedIn profiles and Facebook Pages</p>
+          <p>© {new Date().getFullYear()} Submitly</p>
+          <p>For students &amp; mentors · Free to start</p>
         </div>
       </div>
     </footer>
