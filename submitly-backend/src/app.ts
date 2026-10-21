@@ -7,6 +7,7 @@ import config from "./app/config";
 import { globalErrorHandler } from "./app/middleware/globalErrorHandler";
 import { notFound } from "./app/middleware/notFound";
 import { globalLimiter } from "./app/middleware/rateLimiter";
+import { AuthRoutes } from "./app/module/auth/auth.route";
 
 const app: Application = express();
 
@@ -21,6 +22,8 @@ app.get("/health", async (_req: Request, res: Response) => {
 	res.status(httpStatus.OK).json({ success: true, status: "ok" });
 });
 
+
+app.use("/api/v1/auth", AuthRoutes);
 
 app.use(globalErrorHandler);
 app.use(notFound);
