@@ -20,7 +20,7 @@ const register = catchAsync(async (req: Request, res: Response) => {
 const login = catchAsync(async (req: Request, res: Response) => {
 	const { user, token } = await AuthService.login(req.body);
 
-	setAuthCookie(res, token);
+	setAuthCookie(res, token, user.role);
 
 	sendResponse(res, {
 		success: true,
@@ -33,6 +33,12 @@ const login = catchAsync(async (req: Request, res: Response) => {
 const logout = catchAsync(async (_req: Request, res: Response) => {
 	res.cookie("accessToken", "", {
 		httpOnly: true,
+		secure: config.node_env === "production",
+		sameSite: "lax",
+		maxAge: 0,
+	});
+	res.cookie("role", "", {
+		httpOnly: false,
 		secure: config.node_env === "production",
 		sameSite: "lax",
 		maxAge: 0,

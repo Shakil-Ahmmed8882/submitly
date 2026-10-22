@@ -1,0 +1,27 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e280]:
+    - heading "Submitly" [level=2] [ref=e282]
+    - generic [ref=e284]:
+      - generic [ref=e285]:
+        - heading "Welcome back" [level=1] [ref=e286]
+        - paragraph [ref=e287]: Sign in to your Submitly account
+      - generic [ref=e288]:
+        - generic [ref=e289]:
+          - generic [ref=e290]: Email
+          - textbox "Email" [ref=e291]:
+            - /placeholder: you@example.com
+            - text: mentor@submitly.com
+        - generic [ref=e292]:
+          - generic [ref=e293]: Password
+          - textbox "Password" [ref=e294]:
+            - /placeholder: ••••••••
+            - text: mentor123
+        - button "Sign in" [ref=e295] [cursor=pointer]
+        - paragraph [ref=e296]:
+          - text: Don't have an account?
+          - link "Sign up" [ref=e297] [cursor=pointer]:
+            - /url: /register
+  - region "Notifications alt+T"
+  - button "Open Tanstack query devtools" [ref=e220] [cursor=pointer]
+  - button "Open Next.js Dev Tools" [ref=e274] [cursor=pointer]
+  - alert [ref=e278]: Submitly

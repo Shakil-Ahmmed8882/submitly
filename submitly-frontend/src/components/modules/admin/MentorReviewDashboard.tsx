@@ -2,25 +2,25 @@
 
 import {
   CheckCircle2,
-  ChevronDown,
   ChevronLeft,
   ChevronRight,
   Clock,
   ExternalLink,
   XCircle,
 } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Dropdown } from "@/components/reusable-ui-blocks/dropdown/Dropdown";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import * as submissionsApi from "@/api/submissions.api";
 import type { Submission } from "@/types/submissions.type";
 
 type StatusFilter = "ALL" | "PENDING" | "APPROVED" | "REJECTED";
 
-const STATUS_OPTIONS: { value: StatusFilter; label: string }[] = [
-  { value: "ALL", label: "All statuses" },
+const STATUS_TABS: { value: StatusFilter; label: string }[] = [
+  { value: "ALL", label: "All" },
   { value: "PENDING", label: "Pending" },
   { value: "APPROVED", label: "Approved" },
   { value: "REJECTED", label: "Rejected" },
@@ -55,18 +55,8 @@ function formatDate(iso: string) {
   });
 }
 
-const statsQueryKey = ["submissions", "stats"] as const;
 const allSubmissionsQueryKey = (status: StatusFilter, page: number) =>
   ["submissions", "all", status, page] as const;
-
-function StatCard({ label, value, className }: { label: string; value: number; className?: string }) {
-  return (
-    <div className="rounded-lg border border-border bg-card p-5">
-      <p className="text-xs text-muted-foreground">{label}</p>
-      <p className={`mt-1 text-3xl font-semibold tabular-nums ${className ?? ""}`}>{value}</p>
-    </div>
-  );
-}
 
 function ReviewModal({
   submission,
@@ -159,15 +149,32 @@ function ReviewModal({
 }
 
 export function MentorReviewDashboard() {
-  const [statusFilter, setStatusFilter] = useState<StatusFilter>("ALL");
-  const [page, setPage] = useState(1);
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [selected, setSelected] = useState<Submission | null>(null);
   const LIMIT = 10;
 
-  const { data: stats } = useQuery({
-    queryKey: statsQueryKey,
-    queryFn: submissionsApi.getStats,
-  });
+  const rawStatus = (searchParams.get("status") ?? "ALL").toUpperCase();
+  const statusFilter: StatusFilter = (["ALL", "PENDING", "APPROVED", "REJECTED"].includes(rawStatus)
+    ? rawStatus
+    : "ALL") as StatusFilter;
+  const rawPage = Number(searchParams.get("page") ?? "1");
+  const page = Number.isInteger(rawPage) && rawPage > 0 ? rawPage : 1;
+
+  function setStatus(value: StatusFilter) {
+    const next = new URLSearchParams(searchParams.toString());
+    if (value === "ALL") next.delete("status");
+    else next.set("status", value.toLowerCase());
+    next.delete("page");
+    router.replace(`?${next.toString()}`);
+  }
+
+  function setPage(value: number) {
+    const next = new URLSearchParams(searchParams.toString());
+    if (value <= 1) next.delete("page");
+    else next.set("page", String(value));
+    router.replace(`?${next.toString()}`);
+  }
 
   const { data, isPending, isError } = useQuery({
     queryKey: allSubmissionsQueryKey(statusFilter, page),
@@ -183,41 +190,31 @@ export function MentorReviewDashboard() {
   const totalPages = data?.totalPages ?? 1;
 
   return (
-    <div className="space-y-6">
-      <div>
-        <p className="eyebrow mb-3">Mentor</p>
-        <h1 className="text-display-lg tracking-[-0.04em]">Review dashboard</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Review student submissions and leave structured feedback.
-        </p>
-      </div>
-
-      {stats && (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <StatCard label="Total submissions" value={stats.total} />
-          <StatCard label="Pending review" value={stats.pending} className="text-amber-400" />
-          <StatCard label="Approved" value={stats.approved} className="text-emerald-400" />
-          <StatCard label="Rejected" value={stats.rejected} className="text-red-400" />
-        </div>
-      )}
-
-      <div className="flex items-center gap-3">
-        <Dropdown
-          options={STATUS_OPTIONS}
-          value={statusFilter}
-          onChange={(v) => { setStatusFilter(v); setPage(1); }}
-          align="start"
-          trigger={
+    <div className="space-y-4">
+      <nav
+        aria-label="Submission status"
+        className="flex gap-1 overflow-x-auto border-b border-border"
+      >
+        {STATUS_TABS.map((tab) => {
+          const active = tab.value === statusFilter;
+          return (
             <button
+              key={tab.value}
               type="button"
-              className="inline-flex h-9 items-center gap-2 rounded-md border border-input bg-background px-3 text-sm text-foreground transition-colors hover:bg-accent"
+              onClick={() => setStatus(tab.value)}
+              aria-current={active ? "page" : undefined}
+              className={cn(
+                "-mb-px whitespace-nowrap border-b-2 px-4 py-2.5 text-sm font-medium transition-colors",
+                active
+                  ? "border-foreground text-foreground"
+                  : "border-transparent text-muted-foreground hover:text-foreground",
+              )}
             >
-              {STATUS_OPTIONS.find((o) => o.value === statusFilter)?.label}
-              <ChevronDown className="size-3.5 text-muted-foreground" aria-hidden="true" />
+              {tab.label}
             </button>
-          }
-        />
-      </div>
+          );
+        })}
+      </nav>
 
       {isError ? (
         <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-16 text-center">
@@ -281,7 +278,7 @@ export function MentorReviewDashboard() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setPage((p) => p - 1)}
+                  onClick={() => setPage(page - 1)}
                   disabled={page <= 1}
                 >
                   <ChevronLeft className="size-4" aria-hidden="true" />
@@ -289,7 +286,7 @@ export function MentorReviewDashboard() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setPage((p) => p + 1)}
+                  onClick={() => setPage(page + 1)}
                   disabled={page >= totalPages}
                 >
                   <ChevronRight className="size-4" aria-hidden="true" />

@@ -14,11 +14,19 @@ const toMilliseconds = (duration: string) => {
 	return Number(match[1]) * UNIT_MS[match[2]];
 };
 
-export const setAuthCookie = (res: Response, token: string) => {
+export const setAuthCookie = (res: Response, token: string, role: string) => {
+	const maxAge = toMilliseconds(config.jwt_expires_in);
 	res.cookie("accessToken", token, {
 		httpOnly: true,
 		secure: config.node_env === "production",
 		sameSite: "lax",
-		maxAge: toMilliseconds(config.jwt_expires_in),
+		maxAge,
+	});
+	// Non-httpOnly so the Next.js proxy can read it for route guards
+	res.cookie("role", role, {
+		httpOnly: false,
+		secure: config.node_env === "production",
+		sameSite: "lax",
+		maxAge,
 	});
 };

@@ -1,0 +1,60 @@
+- generic [active] [ref=f7e1]:
+  - generic [ref=f7e2]:
+    - banner [ref=f7e3]:
+      - generic [ref=f7e4]:
+        - generic [ref=f7e5]: Submitly
+        - navigation [ref=f7e6]:
+          - link "Dashboard" [ref=f7e7] [cursor=pointer]:
+            - /url: /dashboard
+        - button "Sign out" [ref=f7e9] [cursor=pointer]
+    - main [ref=f7e14]:
+      - generic [ref=f7e15]:
+        - generic [ref=f7e16]:
+          - heading "Dashboard" [level=1] [ref=f7e17]
+          - paragraph [ref=f7e18]: Review and manage student submissions
+        - generic [ref=f7e32]:
+          - generic [ref=f7e33]:
+            - button "All" [ref=f7e34] [cursor=pointer]
+            - button "Pending" [ref=f7e35] [cursor=pointer]
+            - button "Approved" [ref=f7e36] [cursor=pointer]
+            - button "Rejected" [ref=f7e37] [cursor=pointer]
+          - table [ref=f7e40]:
+            - rowgroup [ref=f7e41]:
+              - row [ref=f7e42]:
+                - columnheader "Student" [ref=f7e43]
+                - columnheader "Project" [ref=f7e44]
+                - columnheader "Status" [ref=f7e45]
+                - columnheader "Submitted" [ref=f7e46]
+                - columnheader "Actions" [ref=f7e47]
+            - rowgroup [ref=f7e48]:
+              - row [ref=f7e49]:
+                - cell [ref=f7e50]
+                - cell [ref=f7e52]
+                - cell [ref=f7e54]
+                - cell [ref=f7e56]
+                - cell [ref=f7e58]
+              - row [ref=f7e60]:
+                - cell [ref=f7e61]
+                - cell [ref=f7e63]
+                - cell [ref=f7e65]
+                - cell [ref=f7e67]
+                - cell [ref=f7e69]
+              - row [ref=f7e71]:
+                - cell [ref=f7e72]
+                - cell [ref=f7e74]
+                - cell [ref=f7e76]
+                - cell [ref=f7e78]
+                - cell [ref=f7e80]
+              - row [ref=f7e82]:
+                - cell [ref=f7e83]
+                - cell [ref=f7e85]
+                - cell [ref=f7e87]
+                - cell [ref=f7e89]
+                - cell [ref=f7e91]
+              - row [ref=f7e93]:
+                - cell [ref=f7e94]
+                - cell [ref=f7e96]
+                - cell [ref=f7e98]
+                - cell [ref=f7e100]
+                - cell [ref=f7e102]
+  - region "Notifications alt+T"

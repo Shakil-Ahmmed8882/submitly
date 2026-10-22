@@ -6,46 +6,26 @@ import type {
 } from "@/types/user.type";
 
 export async function getMe(signal?: AbortSignal) {
-  return (await apiClient<UserProfile>("/users/me", { signal })).data;
+  const res = await apiClient<{ user: UserProfile }>("/auth/me", { signal });
+  return res.data.user;
 }
 
-export async function updateMe(input: UpdateProfileInput) {
-  return (
-    await apiClient<UserProfile>("/users/me", {
-      method: "PATCH",
-      body: { name: input.name },
-    })
-  ).data;
+export async function updateMe(_input: UpdateProfileInput): Promise<UserProfile> {
+  throw new Error("Profile update not supported.");
 }
 
-export async function uploadAvatar(file: File) {
-  const formData = new FormData();
-  formData.append("avatar", file);
-  return (
-    await apiClient<UserProfile>("/users/me/avatar", {
-      method: "PATCH",
-      body: formData,
-    })
-  ).data;
+export async function uploadAvatar(_file: File): Promise<UserProfile> {
+  throw new Error("Avatar upload not supported.");
 }
 
-export async function removeAvatar() {
-  return (
-    await apiClient<UserProfile>("/users/me/avatar", { method: "DELETE" })
-  ).data;
+export async function removeAvatar(): Promise<UserProfile> {
+  throw new Error("Avatar removal not supported.");
 }
 
-export async function changePassword(input: ChangePasswordRequest) {
-  await apiClient<null>("/users/me/password", {
-    method: "PATCH",
-    body: {
-      currentPassword: input.currentPassword,
-      newPassword: input.newPassword,
-    },
-    skipAuthRefresh: true,
-  });
+export async function changePassword(_input: ChangePasswordRequest): Promise<void> {
+  throw new Error("Password change not supported.");
 }
 
-export async function deleteMe() {
-  await apiClient<null>("/users/me", { method: "DELETE" });
+export async function deleteMe(): Promise<void> {
+  throw new Error("Account deletion not supported.");
 }

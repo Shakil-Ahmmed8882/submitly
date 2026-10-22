@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useRef, useState } from "react";
 import { PasswordField } from "@/components/modules/auth/AuthFields";
 import {
@@ -11,7 +10,6 @@ import {
 import { useAuthCooldown } from "@/hooks/auth.hook";
 import { useChangePassword } from "@/hooks/user.hook";
 import { type ApiError, toApiError } from "@/lib/api-error";
-import { routes } from "@/routes";
 import type { ChangePasswordInput, UserProfile } from "@/types/user.type";
 import { changePasswordSchema } from "@/validation/user.validation";
 import { ProfileAlert } from "./ProfileAlert";
@@ -42,32 +40,11 @@ function PasswordSubmitButton({
   );
 }
 
-export function ChangePasswordCard({ profile }: { profile: UserProfile }) {
+export function ChangePasswordCard({ profile: _ }: { profile: UserProfile }) {
   const mutation = useChangePassword();
   const cooldown = useAuthCooldown();
   const formRef = useRef<GenericFormRef<ChangePasswordInput>>(null);
   const [error, setError] = useState<ApiError | null>(null);
-
-  if (!profile.providers.includes("CREDENTIALS")) {
-    return (
-      <ProfileSection
-        title="Security"
-        description="This account does not currently use a password sign-in method."
-      >
-        <ProfileAlert variant="info">
-          <p>
-            You signed in with Google. To set a password, use Forgot password.
-          </p>
-          <Link
-            href={routes.forgotPassword}
-            className="mt-2 inline-flex rounded-sm text-link hover:underline focus-visible:outline-2 focus-visible:outline-ring"
-          >
-            Go to Forgot password
-          </Link>
-        </ProfileAlert>
-      </ProfileSection>
-    );
-  }
 
   async function submit(input: ChangePasswordInput) {
     if (mutation.isPending || cooldown) return;

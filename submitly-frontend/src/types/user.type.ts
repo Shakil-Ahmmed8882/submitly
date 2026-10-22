@@ -1,10 +1,6 @@
 import type { User } from "@/types/auth.type";
 
-export type AuthProvider = "CREDENTIALS" | "GOOGLE";
-
-export interface UserProfile extends User {
-  providers: AuthProvider[];
-}
+export type UserProfile = User;
 
 export interface UpdateProfileInput {
   name: string;

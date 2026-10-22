@@ -2,16 +2,21 @@
 
 import {
   ArrowRight,
+  CheckCircle2,
   ClipboardList,
+  Clock,
   FileText,
   MessageSquare,
   PenSquare,
-  Shield,
+  XCircle,
 } from "lucide-react";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
+import * as submissionsApi from "@/api/submissions.api";
 import { useSession } from "@/hooks/auth.hook";
 import { routes } from "@/routes";
+import { MentorReviewDashboard } from "@/components/modules/admin/MentorReviewDashboard";
 
 const studentQuickLinks = [
   {
@@ -34,20 +39,37 @@ const studentQuickLinks = [
   },
 ];
 
-const mentorQuickLinks = [
-  {
-    title: "Review dashboard",
-    description: "Review and give feedback on student submissions.",
-    href: routes.admin,
-    icon: Shield,
-  },
-  {
-    title: "All submissions",
-    description: "Browse every submission across all students.",
-    href: routes.admin,
-    icon: FileText,
-  },
+const STAT_CONFIG = [
+  { key: "total" as const, label: "Total submissions", icon: FileText, className: "text-foreground" },
+  { key: "pending" as const, label: "Pending review", icon: Clock, className: "text-amber-400" },
+  { key: "approved" as const, label: "Approved", icon: CheckCircle2, className: "text-emerald-400" },
+  { key: "rejected" as const, label: "Rejected", icon: XCircle, className: "text-red-400" },
 ];
+
+function MentorStats() {
+  const { data, isPending } = useQuery({
+    queryKey: ["submissions", "stats"],
+    queryFn: submissionsApi.getStats,
+  });
+
+  return (
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {STAT_CONFIG.map(({ key, label, icon: Icon, className }) => (
+        <div key={key} className="rounded-lg bg-card p-5 shadow-card">
+          <div className="flex items-center justify-between">
+            <p className="text-xs font-medium text-muted-foreground">{label}</p>
+            <Icon className={`size-4 ${className}`} strokeWidth={1.5} aria-hidden="true" />
+          </div>
+          {isPending ? (
+            <div className="mt-3 h-8 w-16 animate-pulse rounded bg-muted" />
+          ) : (
+            <p className="mt-3 text-2xl font-semibold tabular-nums">{data?.[key] ?? 0}</p>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function DashboardOverview() {
   const session = useSession();
@@ -77,19 +99,16 @@ export default function DashboardOverview() {
             </Link>
           </Button>
         )}
-        {isMentor && (
-          <Button asChild variant="outline">
-            <Link href={routes.admin}>
-              <Shield aria-hidden="true" />
-              Review dashboard
-            </Link>
-          </Button>
-        )}
       </header>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {(isMentor ? mentorQuickLinks : studentQuickLinks).map(
-          ({ title, description, href, icon: Icon }) => (
+      {isMentor ? (
+        <>
+          <MentorStats />
+          <MentorReviewDashboard />
+        </>
+      ) : (
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {studentQuickLinks.map(({ title, description, href, icon: Icon }) => (
             <Link
               key={title}
               href={href}
@@ -102,9 +121,9 @@ export default function DashboardOverview() {
               <h2 className="mt-4 text-sm">{title}</h2>
               <p className="mt-2 text-sm text-muted-foreground">{description}</p>
             </Link>
-          ),
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </>
   );
 }

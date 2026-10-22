@@ -55,9 +55,16 @@ export function AdminGuard({ children }: { children: ReactNode }) {
     return <AdminForbidden />;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-0">
+      <header className="mb-6">
+        <p className="eyebrow mb-3">Mentor</p>
+        <h1 className="text-display-lg tracking-[-0.04em]">Review dashboard</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Review student submissions and leave structured feedback.
+        </p>
+      </header>
       <AdminTabs />
-      {children}
+      <div className="pt-6">{children}</div>
     </div>
   );
 }
