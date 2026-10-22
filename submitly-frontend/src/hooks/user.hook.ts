@@ -22,17 +22,9 @@ function toSessionUser(profile: UserProfile): User {
     id: profile.id,
     name: profile.name,
     email: profile.email,
-    emailVerified: profile.emailVerified,
-    avatarUrl: profile.avatarUrl,
-    avatarPublicId: profile.avatarPublicId,
     role: profile.role,
-    isPremium: profile.isPremium,
-    premiumSince: profile.premiumSince,
-    status: profile.status,
-    isDeleted: profile.isDeleted,
-    deletedAt: profile.deletedAt,
-    createdAt: profile.createdAt,
-    updatedAt: profile.updatedAt,
+    created_at: profile.created_at,
+    updated_at: profile.updated_at,
   };
 }
 

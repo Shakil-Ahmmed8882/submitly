@@ -137,7 +137,7 @@ export function usePaymentReturn(mode: "success" | "failure") {
 
         if (payment.status === "SUCCESS") {
           if (mode === "failure") {
-            router.replace(routes.paymentSuccess);
+            router.replace(routes.dashboard);
             return;
           }
           clearPendingPaymentId();

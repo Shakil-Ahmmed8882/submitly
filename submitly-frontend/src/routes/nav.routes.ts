@@ -27,13 +27,13 @@ export const navItems: NavItem[] = [
     label: "Submit project",
     href: routes.create,
     icon: PenSquare,
-    visible: () => true,
+    visible: (user) => user.role === "STUDENT",
   },
   {
     label: "My submissions",
     href: routes.submissions,
     icon: ClipboardList,
-    visible: () => true,
+    visible: (user) => user.role === "STUDENT",
   },
   {
     label: "Profile",
@@ -42,7 +42,7 @@ export const navItems: NavItem[] = [
     visible: () => true,
   },
   {
-    label: "Admin",
+    label: "Review dashboard",
     href: routes.admin,
     icon: Shield,
     visible: (user) => user.role === "MENTOR",

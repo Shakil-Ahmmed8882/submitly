@@ -46,7 +46,7 @@ export function Dropdown<T extends string | number>(props: DropdownProps<T>) {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger>{trigger}</PopoverTrigger>
+      <PopoverTrigger asChild>{trigger}</PopoverTrigger>
 
       <PopoverContent
         align={align}

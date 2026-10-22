@@ -309,7 +309,7 @@ export function AdminAuditLogsPage() {
       }
       const qs = next.toString();
       router.replace(
-        qs ? `${routes.adminAuditLogs}?${qs}` : routes.adminAuditLogs,
+        qs ? `/admin/audit-logs?${qs}` : `/admin/audit-logs`,
       );
     },
     [router, searchParams],

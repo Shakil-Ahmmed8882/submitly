@@ -5,7 +5,7 @@ import type { PlatformStatus } from "@/types/platform.type";
 export type { Platform, PlatformStatus } from "@/types/platform.type";
 
 export type AdminRole = User["role"];
-export type AdminUserStatus = User["status"];
+export type AdminUserStatus = "ACTIVE" | "BLOCKED";
 export type PageMeta = NonNullable<ApiEnvelope<unknown>["meta"]>;
 
 export interface Paged<T> {

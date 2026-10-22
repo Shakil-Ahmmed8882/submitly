@@ -25,7 +25,7 @@ import {
   formatAdminDateTime,
 } from "./AdminShared";
 
-const roles: AdminRole[] = ["USER", "ADMIN", "SUPER_ADMIN"];
+const roles: AdminRole[] = ["STUDENT", "MENTOR"];
 
 type Confirm =
   | { kind: "block" | "unblock" | "grant" | "revoke" }

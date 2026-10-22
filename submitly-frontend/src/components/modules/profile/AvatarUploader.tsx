@@ -79,7 +79,7 @@ export function AvatarUploader({ profile }: { profile: UserProfile }) {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
         <div className="relative h-24 w-24 shrink-0">
           <BaseAvatar
-            src={previewUrl ?? profile.avatarUrl}
+            src={previewUrl ?? null}
             name={profile.name}
             alt={`${profile.name}'s profile photo`}
             size="xl"
@@ -125,7 +125,7 @@ export function AvatarUploader({ profile }: { profile: UserProfile }) {
           <Button
             type="button"
             variant="outline"
-            disabled={busy || (!profile.avatarUrl && !previewUrl)}
+            disabled={busy || !previewUrl}
             aria-busy={remove.isPending}
             onClick={() => void handleRemove()}
           >

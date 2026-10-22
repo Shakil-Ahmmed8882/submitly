@@ -6,10 +6,8 @@ import { cn } from "@/lib/utils";
 import { routes } from "@/routes";
 
 const tabs = [
-  { label: "Platforms", href: routes.adminPlatforms },
+  { label: "Submissions", href: routes.admin },
   { label: "Users", href: routes.adminUsers },
-  { label: "Audit logs", href: routes.adminAuditLogs },
-  { label: "Upcoming features", href: routes.adminUpcomingFeatures },
 ] as const;
 
 export function AdminTabs() {

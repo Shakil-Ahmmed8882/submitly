@@ -1,6 +1,7 @@
-import { redirect } from "next/navigation";
-import { routes } from "@/routes";
+import { MentorReviewDashboard } from "@/components/modules/admin/MentorReviewDashboard";
 
-export default function AdminIndexPage() {
-  redirect(routes.adminPlatforms);
+export const metadata = { title: "Review Dashboard · Submitly" };
+
+export default function AdminPage() {
+  return <MentorReviewDashboard />;
 }

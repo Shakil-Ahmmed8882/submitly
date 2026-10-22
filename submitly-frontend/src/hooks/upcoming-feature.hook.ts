@@ -24,7 +24,7 @@ function usePremiumAccess() {
   const session = useSession();
   return {
     known: !session.isPending,
-    isPremium: session.data?.isPremium === true,
+    isPremium: false,
   };
 }
 
