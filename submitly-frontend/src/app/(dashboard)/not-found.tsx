@@ -1,1 +1,1 @@
-export { default } from "@/components/modules/shared/RouteNotFound";
+﻿export { default } from "@/modules/shared/RouteNotFound";

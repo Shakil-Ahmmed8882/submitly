@@ -1,7 +1,7 @@
-import LoginForm from "@/components/modules/auth/LoginForm";
+import LoginHomeLayout from "@/modules/auth/LoginHomeLayout";
 
 export const metadata = { title: "Log in" };
 
 export default function LoginPage() {
-  return <LoginForm />;
+  return <LoginHomeLayout />;
 }

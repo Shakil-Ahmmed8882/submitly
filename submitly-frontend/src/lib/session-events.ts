@@ -1,14 +1,15 @@
-type SessionListener = () => void;
-const listeners = new Set<SessionListener>();
+type TListener = () => void;
+
+const listeners = new Set<TListener>();
 
 export const sessionEvents = {
-  subscribe(listener: SessionListener) {
+  expired() {
+    for (const listener of listeners) listener();
+  },
+  subscribe(listener: TListener) {
     listeners.add(listener);
     return () => {
       listeners.delete(listener);
     };
-  },
-  expired() {
-    for (const listener of listeners) listener();
   },
 };

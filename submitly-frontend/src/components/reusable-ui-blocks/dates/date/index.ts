@@ -1,1 +1,0 @@
-export { stampDateToUtc } from "./stampDateToUtc";

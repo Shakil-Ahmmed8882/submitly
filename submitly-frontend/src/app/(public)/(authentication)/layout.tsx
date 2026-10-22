@@ -1,13 +1,11 @@
-import { Suspense } from "react";
 import { Logo } from "@/components/brand/Logo";
-import AuthLoading from "@/components/modules/auth/AuthLoading";
-import { GuestOnly } from "@/components/modules/auth/SessionGuard";
 
-export default function AuthLayout({
-  children,
-}: {
+type TAuthLayoutProps = {
   children: React.ReactNode;
-}) {
+};
+
+export default function AuthLayout(props: TAuthLayoutProps) {
+  const { children } = props;
   return (
     <>
       <a
@@ -21,9 +19,7 @@ export default function AuthLayout({
         className="flex min-h-dvh flex-1 flex-col items-center justify-center gap-8 px-4 py-12"
       >
         <Logo />
-        <Suspense fallback={<AuthLoading />}>
-          <GuestOnly>{children}</GuestOnly>
-        </Suspense>
+        {children}
       </main>
     </>
   );

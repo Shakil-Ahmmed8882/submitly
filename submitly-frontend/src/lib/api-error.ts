@@ -1,5 +1,7 @@
 import { FetchError } from "ofetch";
 
+const DEFAULT_RETRY_AFTER_SECONDS = 15 * 60;
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
@@ -8,17 +10,20 @@ export class ApiError extends Error {
   readonly status: number;
   readonly fieldErrors: Record<string, string>;
   readonly sessionExpired: boolean;
+  readonly retryAfter: number;
 
   constructor(
     status: number,
     message: string,
     body?: unknown,
     sessionExpired = false,
+    retryAfter = DEFAULT_RETRY_AFTER_SECONDS,
   ) {
     super(message);
     this.name = "ApiError";
     this.status = status;
     this.sessionExpired = sessionExpired;
+    this.retryAfter = retryAfter;
     this.fieldErrors = {};
     if (isRecord(body) && isRecord(body.errors)) {
       for (const [key, value] of Object.entries(body.errors)) {
@@ -27,30 +32,15 @@ export class ApiError extends Error {
     }
   }
 
-  /**
-   * The backend was unreachable or not ready (network failure, timeout, or a
-   * gateway reply while it boots) — worth retrying, never a session verdict.
-   */
-  get isTransient() {
-    return (
-      this.status === 0 ||
-      this.status === 502 ||
-      this.status === 503 ||
-      this.status === 504
-    );
-  }
-
   get userMessage() {
     if (this.sessionExpired)
       return "Your session expired. Please sign in again.";
     if (this.status === 429)
-      return "Too many attempts. Please try again later.";
-    if (this.isTransient && this.status !== 0)
-      return "The server is starting up or busy. Please try again in a moment.";
-    if (this.status >= 500)
-      return "Something went wrong on our side. Please try again.";
+      return this.message || "Too many attempts. Please try again later.";
     if (this.status === 0)
       return "Couldn't reach the server. Check your connection and try again.";
+    if (this.status >= 500)
+      return "Something went wrong on our side. Please try again.";
     return this.message || "Something went wrong. Please try again.";
   }
 }
@@ -62,7 +52,14 @@ export function toApiError(error: unknown): ApiError {
     const body: unknown = error.data;
     const message =
       isRecord(body) && typeof body.message === "string" ? body.message : "";
-    return new ApiError(status, message, body);
+    const retryAfter = Number(error.response?.headers.get("Retry-After"));
+    return new ApiError(
+      status,
+      message,
+      body,
+      false,
+      retryAfter > 0 ? retryAfter : undefined,
+    );
   }
   return new ApiError(0, "The request could not be completed.");
 }

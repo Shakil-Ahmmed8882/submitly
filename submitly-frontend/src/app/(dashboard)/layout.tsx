@@ -1,18 +1,16 @@
 import { Suspense } from "react";
-import { AppShell } from "@/components/layout/dashboard/AppShell";
-import { AuthGuard } from "@/components/modules/auth/SessionGuard";
-import DashboardLoading from "@/components/modules/shared/DashboardLoading";
+import { AppShell } from "@/components/navigation/dashboard/AppShell";
+import DashboardLoading from "@/modules/shared/DashboardLoading";
 
-export default function DashboardLayout({
-  children,
-}: {
+type TDashboardLayoutProps = {
   children: React.ReactNode;
-}) {
+};
+
+export default function DashboardLayout(props: TDashboardLayoutProps) {
+  const { children } = props;
   return (
     <Suspense fallback={<DashboardLoading />}>
-      <AuthGuard>
-        <AppShell>{children}</AppShell>
-      </AuthGuard>
+      <AppShell>{children}</AppShell>
     </Suspense>
   );
 }

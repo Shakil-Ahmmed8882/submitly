@@ -2,15 +2,9 @@ export const routes = {
   home: "/",
   login: "/login",
   register: "/register",
-  forgotPassword: "/forgot-password",
-  resetPassword: "/reset-password",
   dashboard: "/dashboard",
-  profile: "/profile",
-  create: "/create",
-  submissions: "/submissions",
-  submissionDetail: (id: string) => `/submissions/${id}`,
-  admin: "/admin",
-  adminUsers: "/admin/users",
+  submit: "/dashboard/submit",
+  profile: "/dashboard/profile",
 } as const;
 
 export function safeNext(value: string | null) {
@@ -26,12 +20,7 @@ export function safeNext(value: string | null) {
     const parsed = new URL(value, "https://internal.invalid");
     if (
       parsed.origin !== "https://internal.invalid" ||
-      [
-        routes.login,
-        routes.register,
-        routes.forgotPassword,
-        routes.resetPassword,
-      ].some((path) => parsed.pathname === path)
+      [routes.login, routes.register].some((path) => parsed.pathname === path)
     )
       return routes.dashboard;
     return `${parsed.pathname}${parsed.search}${parsed.hash}`;

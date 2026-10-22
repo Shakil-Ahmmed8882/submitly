@@ -1,3 +1,5 @@
+export type TSubmissionStatus = "PENDING" | "APPROVED" | "REJECTED";
+
 export interface SubmissionUser {
   id: string;
   name: string;
@@ -10,14 +12,12 @@ export interface Submission {
   repo_url: string;
   live_link: string | null;
   description: string;
-  status: "PENDING" | "APPROVED" | "REJECTED";
+  status: TSubmissionStatus;
   review_comment: string | null;
-  reviewed_by_id: string | null;
   reviewed_at: string | null;
   user_id: string;
   user?: SubmissionUser;
   created_at: string;
-  updated_at: string;
 }
 
 export interface CreateSubmissionInput {
@@ -27,9 +27,11 @@ export interface CreateSubmissionInput {
   description: string;
 }
 
+export type TReviewStatus = Exclude<TSubmissionStatus, "PENDING">;
+
 export interface ReviewInput {
-  status: "APPROVED" | "REJECTED";
-  review_comment?: string;
+  status: TReviewStatus;
+  comment?: string;
 }
 
 export interface SubmissionStats {

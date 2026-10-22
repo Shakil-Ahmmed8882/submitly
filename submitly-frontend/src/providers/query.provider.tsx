@@ -7,7 +7,10 @@ import {
 } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 import { ApiError } from "@/lib/api-error";
-import { rateLimit } from "@/lib/rate-limit";
+
+type TQueryProviderProps = {
+  children: ReactNode;
+};
 
 function makeQueryClient() {
   return new QueryClient({
@@ -16,7 +19,6 @@ function makeQueryClient() {
         staleTime: 60 * 1000,
         retry: (count, error) =>
           count < 1 &&
-          rateLimit.getSnapshot() <= Date.now() &&
           error instanceof ApiError &&
           (error.status === 0 || error.status >= 500),
         refetchOnWindowFocus: false,
@@ -34,7 +36,8 @@ function getQueryClient() {
   return browserQueryClient;
 }
 
-export default function QueryProvider({ children }: { children: ReactNode }) {
+export default function QueryProvider(props: TQueryProviderProps) {
+  const { children } = props;
   return (
     <QueryClientProvider client={getQueryClient()}>
       {children}

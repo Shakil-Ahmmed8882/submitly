@@ -31,7 +31,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout(props: LayoutProps<"/">) {
+  const { children } = props;
   return (
     <html
       lang="en"
