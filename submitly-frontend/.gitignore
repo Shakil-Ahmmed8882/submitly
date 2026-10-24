@@ -47,8 +47,12 @@ package-lock.json
 CLAUDE.md
 AGENTS.md
 openspec/
-docs/
 design-system/
 *.spec.md
 temp.md
 notes.ts
+
+# project docs duplicated from backend — link to backend's copy instead
+docs/brief.md
+docs/prd.md
+docs/api-contract.md

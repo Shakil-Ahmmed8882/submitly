@@ -32,8 +32,7 @@ Requires the [backend](../submitly-backend/README.md) running locally (default `
 src/
   app/            Next.js App Router routes
   modules/        Feature modules (auth, student, mentor, shared) — services, sections, layouts
-  components/     Shared UI components
-  design-system/  Design tokens and primitives
+  components/     Shared UI components (components/ui holds design primitives)
   lib/            API client and shared utilities
   providers/      App-level context providers
   routes/         Route and navigation definitions
@@ -44,13 +43,13 @@ proxy.ts          Route guards (auth/role checks)
 
 ## Docs
 
-- [Brief](docs/brief.md)
-- [PRD](docs/prd.md)
+- [Brief](../submitly-backend/docs/brief.md) (shared with backend)
+- [PRD](../submitly-backend/docs/prd.md) (shared with backend)
+- [API contract](../submitly-backend/docs/api-contract.md) (shared with backend)
 - [Frontend architecture](docs/frontend-architecture.md)
 - [Frontend data model](docs/frontend-data-model.md)
 - [Design system](docs/design-system.md)
 - [Screens planning](docs/screens-planning.md)
-- [API contract](docs/api-contract.md)
 - [API audit](docs/api-audit.md)
 
 ## Live
