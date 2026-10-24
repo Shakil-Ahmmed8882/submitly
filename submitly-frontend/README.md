@@ -1,6 +1,6 @@
 # Submitly Frontend
 
-[← Submitly (root)](../README.md) · [Backend](../submitly-backend/README.md) · [Live API](https://submitly-backend.vercel.app/health)
+[← Submitly (root)](../README.md) · [Backend](../submitly-backend/README.md) · [Live App](https://submitly-frontend.vercel.app) · [Live API](https://submitly-backend.vercel.app/health)
 
 Next.js dashboard for Submitly. Students submit projects and track review status; mentors review, approve, or reject submissions.
 
@@ -55,5 +55,6 @@ proxy.ts          Route guards (auth/role checks)
 
 ## Live
 
+- Frontend: https://submitly-frontend.vercel.app
 - Backend API: https://submitly-backend.vercel.app
 - Health check: https://submitly-backend.vercel.app/health

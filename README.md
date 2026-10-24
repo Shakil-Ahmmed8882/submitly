@@ -11,6 +11,7 @@ Project submission and review dashboard. Students submit projects; mentors revie
 
 ## Live
 
+- Frontend: https://submitly-frontend.vercel.app
 - Backend API: https://submitly-backend.vercel.app
 - Health check: https://submitly-backend.vercel.app/health
 

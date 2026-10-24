@@ -1,6 +1,6 @@
 # Submitly Backend
 
-[← Submitly (root)](../README.md) · [Frontend](../submitly-frontend/README.md) · [Live API](https://submitly-backend.vercel.app/health)
+[← Submitly (root)](../README.md) · [Frontend](../submitly-frontend/README.md) · [Live App](https://submitly-frontend.vercel.app) · [Live API](https://submitly-backend.vercel.app/health)
 
 REST API for a project submission and review dashboard. Students submit projects; mentors approve or reject them.
 
@@ -89,5 +89,6 @@ prisma/
 
 ## Live
 
+- Frontend: https://submitly-frontend.vercel.app
 - API: https://submitly-backend.vercel.app
 - Health check: https://submitly-backend.vercel.app/health
